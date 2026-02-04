@@ -1,0 +1,16 @@
+services:
+  mariadb:
+    image: mariadb:11
+    container_name: clearcall-mariadb
+    ports:
+      - "3379:3306"
+    environment:
+      MARIADB_DATABASE: callcenter
+      MARIADB_USER: calluser
+      MARIADB_PASSWORD: callpass
+      MARIADB_ROOT_PASSWORD: rootpass
+    volumes:
+      - mariadb-data:/var/lib/mysql
+
+volumes:
+  mariadb-data:
