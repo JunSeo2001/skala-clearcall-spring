@@ -38,3 +38,6 @@ jwt:
   call-secret: ${JWT_CALL_SECRET:change-this-call-secret-please-32bytes-minimum}
   access-exp-minutes: 60
   call-exp-minutes: 5
+
+app:
+  fastapi-url: http://localhost:8000

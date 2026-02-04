@@ -7,6 +7,7 @@ import com.example.clearcall.service.ReportService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -46,8 +47,10 @@ public class ReportController {
             description = "title/content로 리포트를 생성합니다. 생성자는 Access JWT의 userId로 저장됩니다."
     )
     public ReportResponse create(@Valid @RequestBody ReportRequest request,
-                                 @AuthenticationPrincipal UserPrincipal principal) {
-        return reportService.create(request, principal.userId());
+                                 @AuthenticationPrincipal UserPrincipal principal,
+                                    HttpServletRequest httpServletRequest) {
+        String authorization = httpServletRequest.getHeader("Authorization");
+        return reportService.create(request, principal.userId(), authorization);
     }
 
     @PutMapping("/{id}")

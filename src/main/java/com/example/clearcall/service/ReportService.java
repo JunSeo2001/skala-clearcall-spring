@@ -1,5 +1,6 @@
 package com.example.clearcall.service;
 
+import com.example.clearcall.client.ReportAnalysisClient;
 import com.example.clearcall.dto.report.ReportRequest;
 import com.example.clearcall.dto.report.ReportResponse;
 import com.example.clearcall.entity.Report;
@@ -16,6 +17,7 @@ import java.util.List;
 public class ReportService {
 
     private final ReportRepository reportRepository;
+    private final ReportAnalysisClient reportAnalysisClient;
 
     @Transactional(readOnly = true)
     public List<ReportResponse> getAll() {
@@ -30,10 +32,12 @@ public class ReportService {
     }
 
     @Transactional
-    public ReportResponse create(ReportRequest request, Long userId) {
+    public ReportResponse create(ReportRequest request, Long userId, String authorization) {
+        String generatedReport = reportAnalysisClient.generateReport(request.title(), request.content(), authorization);
+
         Report report = new Report();
         report.setTitle(request.title());
-        report.setContent(request.content());
+        report.setContent(generatedReport);
         report.setCreatedByUserId(userId);
         return toResponse(reportRepository.save(report));
     }
